@@ -23,7 +23,9 @@ INSERT INTO qualificacoes (professor, disciplina)
     VALUES
         (1, 1),
         (1, 2),
+        (1, 3),
         (2, 1),
+        (2, 2),
         (2, 3);
 
 INSERT INTO disciplinas (nome)
@@ -32,14 +34,19 @@ INSERT INTO disciplinas (nome)
         ('Estatística I'),
         ('Teoria do números');
 
-INSERT INTO avaliacoes (aluno, materia, nota)
+INSERT INTO avaliacoes (aluno, aula, nota)
     VALUES
         (1, 1, 60),
         (2, 1, 70),
         (3, 2, 45);
 
-INSERT INTO presenca (aluno, materia, presenca)
+INSERT INTO presenca (aluno, aula, presenca)
     VALUES
         (1, 1, 40),
         (2, 1, 90),
         (3, 1, 80);
+
+INSERT INTO aulas (disciplina, curso, professor, ano)
+    VALUES
+        (1, 1, 1, 2021),
+        (2, 2, 2, 2021)

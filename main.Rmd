@@ -28,6 +28,14 @@ import sqlite3
 import os
 import pandas as pd
 
+def print_sql(caminho_arquivo):
+    with open(caminho_arquivo) as arquivo:
+        print(f"```sql\n{arquivo.read()}\n```")
+
+def print_consulta(consulta, colunas: list):
+    print(
+        pd.DataFrame(consulta, columns = colunas).to_markdown(index = False)
+    )
 
 class Conexao:
     """Classe para admnistrar a conexão com sqlite3."""
@@ -42,17 +50,7 @@ class Conexao:
         self.conn.commit()
         self.conn.close()
 
-
-def print_sql(caminho_arquivo):
-    with open(caminho_arquivo) as arquivo:
-        print(f"```sql\n{arquivo.read()}\n```")
-
-def print_consulta(consulta, colunas: list):
-    print(
-        pd.DataFrame(consulta, columns = colunas).to_markdown(index = False)
-    )
-
-nome_banco = "temp.db"
+nome_banco = "teste.db"
 
 if os.path.exists(nome_banco):
     os.remove(nome_banco)
@@ -152,8 +150,8 @@ with Conexao(nome_banco) as cur:
     consulta_1 = cur.fetchall()
     cur.execute(consultas[1])
     consulta_2 = cur.fetchall()
-    #cur.execute(consultas[2])
-    #consulta_3 = cur.fetchall()
+    cur.execute(consultas[2])
+    consulta_3 = cur.fetchall()
 ```
 
 ```{python print_consulta_1_sql}
@@ -164,7 +162,7 @@ print(f"```sql\n{consultas[0]};\n```")
 print_consulta(consulta_1, ["Nome"])
 ```
 
-    # Consulta 2
+# Consulta 2
 
 ```{python print_consulta_2_sql}
 print(f"```sql\n{consultas[1]};\n```")
@@ -176,3 +174,12 @@ print_consulta(consulta_2, ["Nome"])
 
 
 # Consulta 3
+```sql
+
+```
+
+
+
+\newpage
+
+# Resultados

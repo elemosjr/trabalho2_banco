@@ -11,12 +11,26 @@ CREATE TABLE alunos(
 CREATE TABLE avaliacoes(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     aluno INT,
-    materia INT,
+    aula INT,
     nota INT,
     FOREIGN KEY (aluno)
         REFERENCES alunos (id),
-    FOREIGN KEY (materia)
-        REFERENCES materias (id)
+    FOREIGN KEY (aula)
+        REFERENCES aulas (id)
+);
+
+CREATE TABLE aulas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    disciplina INT,
+    curso INT,
+    professor INT,
+    ano INT,
+    FOREIGN KEY (professor)
+        REFERENCES professores (id),
+    FOREIGN KEY (curso)
+        REFERENCES cursos (id),
+    FOREIGN KEY (disciplina)
+        REFERENCES disciplinas (id)
 );
 
 CREATE TABLE centros(
@@ -56,12 +70,12 @@ CREATE TABLE disciplinas(
 CREATE TABLE presenca(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     aluno INT,
-    materia INT,
+    aula INT,
     presenca INT,
     FOREIGN KEY (aluno)
         REFERENCES alunos (id),
-    FOREIGN KEY (materia)
-        REFERENCES materias (id)
+    FOREIGN KEY (aula)
+        REFERENCES aula (id)
 );
 
 CREATE TABLE professores(
