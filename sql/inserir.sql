@@ -1,25 +1,24 @@
-INSERT INTO alunos (nome, curso, ano, ano_ingresso)
+INSERT INTO Alunos (NomeAluno, IdCurso, AnoIngresso)
     VALUES
-        ('Miguel Almeida', 1, 1, 2021),
-        ('Catarina Cardoso', 1, 1, 2021),
-        ('Ana Júlia de Mota', 2, 1, 2021);
+        ('Miguel Almeida', 1, 2021),
+        ('Catarina Cardoso', 1, 2021),
+        ('Ana Júlia de Mota', 2, 2021);
 
-INSERT INTO cursos (nome, departamento)
+INSERT INTO Cursos (NomeCurso, IdDepto)
     VALUES
         ('Matemática', 1),
         ('Estatística', 2);
 
-INSERT INTO professores (nome, departamento)
+INSERT INTO Professores (NomeProf, IdDepto)
     VALUES
         ('Yuri Carvalho', 1),
         ('Giovanna Sales', 2);
 
-INSERT INTO departamentos (nome, centro)
+INSERT INTO Departamentos (NomeDepto, IdCentro)
     VALUES
         ('Matemática', 1),
-        ('Estatística', 1);
-
-INSERT INTO qualificacoes (professor, disciplina)
+        ('Estatística', 2);
+INSERT INTO Qualificacoes (IdProf, IdDisc)
     VALUES
         (1, 1),
         (1, 2),
@@ -27,26 +26,22 @@ INSERT INTO qualificacoes (professor, disciplina)
         (2, 1),
         (2, 2),
         (2, 3);
-
-INSERT INTO disciplinas (nome)
+INSERT INTO Disciplinas (NomeDisc)
     VALUES
         ('Cálculo I'),
         ('Estatística I'),
-        ('Teoria do números');
-
-INSERT INTO avaliacoes (aluno, aula, nota)
+        ('Teoria dos números');
+INSERT INTO Avaliacoes (IdAluno, IdAula, Nota)
     VALUES
         (1, 1, 60),
         (2, 1, 70),
         (3, 2, 45);
-
-INSERT INTO presenca (aluno, aula, presenca)
+INSERT INTO Presenca (IdAluno, IdAula, Presenca)
     VALUES
         (1, 1, 40),
         (2, 1, 90),
         (3, 1, 80);
-
-INSERT INTO aulas (disciplina, curso, professor, ano)
+INSERT INTO Aulas (IdDisc, IdCurso, IdProf, Ano)
     VALUES
         (1, 1, 1, 2021),
         (2, 2, 2, 2021)

@@ -1,27 +1,27 @@
-SELECT professores.nome FROM professores
-    INNER JOIN qualificacoes
-    ON qualificacoes.professor = professores.id
-    WHERE qualificacoes.disciplina IN
-        (SELECT id FROM disciplinas
-            WHERE nome = 'Cálculo I');
-SELECT alunos.nome FROM alunos
-    WHERE alunos.id IN
-        (SELECT avaliacoes.aluno FROM avaliacoes
-            INNER JOIN presenca
-            ON avaliacoes.aluno = presenca.aluno
-                WHERE nota >= 60 AND presenca < 70);
-SELECT professores.nome FROM professores
-    INNER JOIN qualificacoes
-        ON qualificacoes.professor = professores.id
-    INNER JOIN disciplinas
-        ON disciplinas.id = qualificacoes.disciplina
-    INNER JOIN aulas
-        ON aulas.disciplina = disciplinas.id
-    INNER JOIN cursos
-        ON aulas.curso = cursos.id
+SELECT Professores.IdProf, Professores.NomeProf FROM Professores
+    INNER JOIN Qualificacoes
+    ON Qualificacoes.IdProf = Professores.IdProf
+    WHERE Qualificacoes.IdDisc IN
+        (SELECT IdDisc FROM Disciplinas
+            WHERE NomeDisc = 'Cálculo I');
+SELECT Alunos.IdAluno, Alunos.NomeAluno FROM Alunos
+    WHERE Alunos.IdAluno IN
+        (SELECT Avaliacoes.IdAluno FROM Avaliacoes
+            INNER JOIN Presenca
+            ON Avaliacoes.IdAluno = Presenca.IdAluno
+                WHERE Nota >= 60 AND Presenca < 70);
+SELECT Professores.IdProf, Professores.NomeProf FROM Professores
+    INNER JOIN Qualificacoes
+        ON Qualificacoes.IdProf = Professores.IdProf
+    INNER JOIN Disciplinas
+        ON Disciplinas.IdDisc = Qualificacoes.IdDisc
+    INNER JOIN Aulas
+        ON Aulas.IdDisc = Disciplinas.IdDisc
+    INNER JOIN Cursos
+        ON Aulas.IdCurso = Cursos.IdCurso
     WHERE 
-        cursos.nome = 'Estatística'
+        Cursos.NomeCurso = 'Estatística'
         AND
-        professores.departamento IN
-            (SELECT id FROM departamentos
-                WHERE nome = 'Matemática');
+        Professores.IdDepto IN
+            (SELECT IdDepto FROM Departamentos
+                WHERE NomeDepto = 'Matemática');

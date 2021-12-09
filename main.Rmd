@@ -1,21 +1,24 @@
 ---
+lang: pt-br
 output:
-  pdf_document:
-    latex_engine: xelatex
-    df_print: kable
+    pdf_document:
+        latex_engine: xelatex
+        df_print: kable
 documentclass: article
 classoption: a4paper
 fontsize: 12pt
 geometry: left=2cm, right=2cm, top=3cm, bottom=1.5cm
 header-includes:
-  - \usepackage{float}
-  - \usepackage[T1]{fontenc}
-  - \usepackage{hyperref}
-  - \pagenumbering{gobble}
-  - \usepackage{draftwatermark}
-  - \SetWatermarkText{\includegraphics{fundo.pdf}}
-  - \SetWatermarkAngle{0}
-  - \SetWatermarkScale{1.25}
+    - \usepackage{float}
+    - \usepackage[T1]{fontenc}
+    - \usepackage{hyperref}
+    - \usepackage{multicol}
+    - \usepackage{booktabs}
+    - \pagenumbering{gobble}
+    - \usepackage{draftwatermark}
+    - \SetWatermarkText{\includegraphics{fundo.pdf}}
+    - \SetWatermarkAngle{0}
+    - \SetWatermarkScale{1.25}
 ---
 
 ```{r setup, include = FALSE}
@@ -23,7 +26,7 @@ knitr::opts_chunk$set(echo = FALSE, results = "asis")
 ```
 
 
-```{python, include = FALSE}
+```{python py_setup, include = FALSE}
 import sqlite3
 import os
 import pandas as pd
@@ -34,7 +37,7 @@ def print_sql(caminho_arquivo):
 
 def print_consulta(consulta, colunas: list):
     print(
-        pd.DataFrame(consulta, columns = colunas).to_markdown(index = False)
+        pd.DataFrame(consulta, columns = colunas).to_latex(index = False)
     )
 
 class Conexao:
@@ -63,35 +66,33 @@ arquivo_consulta = os.path.join("sql", "consultas.sql")
 ```
 
 \begin{titlepage}
-  \begin{center}
-    \vspace*{80pt}
-    \Huge\textbf{Universidade Estadual de Maringá}\\
-    \Huge\textbf{Banco de Dados}\\
-    \vspace{30pt}
-    \LARGE\textbf{Trabalho 1 - Projeto de Banco de Dados:}\\
-    \LARGE\textbf{Modelos Conceitual e Lógico}
-  \end{center}
+    \begin{center}
+        \vspace*{80pt}
+        \Huge\textbf{Universidade Estadual de Maringá}\\
+        \Huge\textbf{Banco de Dados}\\
+        \vspace{30pt}
+        \LARGE\textbf{Trabalho 2 - Desenvolvimento do Banco de Dados}\\
+    \end{center}
 
-  \vspace{100pt}
-  \begin{center}
+    \vspace{100pt}
+    \begin{center}
 	
-  {\raggedright
-    \begin{minipage}[t]{10cm}
-    \setlength{\baselineskip}{0.25in}
-    \vspace{5pt}
-    {\large \textbf{Professor:}} Me. André Felipe Ribeiro Cordeiro\\
-  	{\large \textbf{Alunos:}}
-  	  \text{Eduardo José de Campos Lemos Júnior (ra106561)} \\
-  	  \text{\hspace{2.065cm}Mariana Sabiar Podanoscki (ra108513)} \\
-  	\end{minipage}\\[1cm]
-   }
-   \vfill
-   \textrm{Maringá \\ 
-   Novembro de 2021}
-  \end{center}
+    {\raggedright
+        \begin{minipage}[t]{10cm}
+        \setlength{\baselineskip}{0.25in}
+        \vspace{5pt}
+        {\large \textbf{Professor:}} Me. André Felipe Ribeiro Cordeiro\\
+    	{\large \textbf{Alunos:}}
+    	    \text{Eduardo José de Campos Lemos Júnior (ra106561)} \\
+    	    \text{\hspace{2.065cm}Mariana Sabiar Podanoscki (ra108513)} \\
+    	\end{minipage}\\[1cm]
+     }
+     \vfill
+     \textrm{Maringá \\ 
+     Dezembro de 2021}
+    \end{center}
 
 \end{titlepage}
-
 
 \newpage
 
@@ -99,7 +100,59 @@ arquivo_consulta = os.path.join("sql", "consultas.sql")
 
 \newpage
 
-# Criando Tabelas
+# Introdução
+
+O objetivo deste trabalho é o desenvolvimento do banco de dados projetado no trabalho anterior.
+
+Este trabalho será feito utilizando a engine [SQLite](https://sqlite.org).
+
+## Modelo Lógico
+
+No trabalho anterior o seguinte modelo lógico foi desenvolvido.
+
+\begin{itemize}
+    \item \textbf{Centros} (\underline{IdCentro}, NomeCentro)
+    
+    \item \textbf{Departamentos} (\underline{IdDepto}, NomeDepto, IdCentro)\\
+        IdCentro \textbf{referencia} Centros
+        
+   \item \textbf{Cursos} (\underline{IdCurso}, NomeCurso, IdDepto)\\
+        IdDepto \textbf{referencia} Departamentos
+
+    \item \textbf{Disciplinas} (\underline{IdDisc}, NomeDisc)
+
+    \item \textbf{Aulas} (\underline{IdAula}, IdDisc, IdCurso, IdProf, Ano)\\
+        IdCurso \textbf{referencia} Cursos\\
+        IdDisc \textbf{referencia} Disciplinas\\
+        IdProf \textbf{referencia} Professores
+
+    \item \textbf{Aluno} (\underline{IdAluno}, NomeAluno, IdCurso, AnoIngresso)\\
+        IdCurso \textbf{referencia} Cursos
+        
+    \item \textbf{Professores} (\underline{IdProf}, NomeProf, IdDepto)\\
+        IdDepto \textbf{referencia} Departamentos
+
+    \item \textbf{Avaliações} (\underline{IdAvaliacao}, IdAluno, IdAula, Nota)\\
+        IdAluno \textbf{referencia} Alunos\\
+        IdAula \textbf{referencia} Aulas
+
+    \item \textbf{Presença} (\underline{IdPresenca}, IdAluno, idAula, Presenca)\\
+        IdAluno \textbf{referencia} Alunos\\
+        IdAula \textbf{referencia} Aulas
+        
+    \item \textbf{Matricula} (\underline{IdMatricula}, IdAluno, IdAula)\\
+        IdAluno \textbf{referencia} Alunos\\
+        IdAula \textbf{referencia} Aulas
+        
+    \item \textbf{Qualificação} (\underline{IdQual}, IdProf, IdDisc)\\
+        IdProf \textbf{referencia} Professores\\
+        IdDisc \textbf{referencia} Disciplinas
+        
+\end{itemize}
+
+\newpage
+
+# Criando as Tabelas
 
 ```{python criar_sql, include = FALSE}
 with open(arquivo_criar) as arquivo:
@@ -116,15 +169,7 @@ print_sql(arquivo_criar)
 
 \newpage
 
-# Consultas
-
-## Proposta de consultas
-
-1.   Professores que podem dar aula de Cálculo I.
-2.   Alunos que foram aprovados por nota mas reprovados por falta.
-3.   Professores do departamento de matemarica que tem qualificacao para alguma matéria do curso de estatística
-
-## Inserção dos dados
+# Inserção dos dados
 
 ```{python inserir_sql, include = FALSE}
 with open(arquivo_inserir) as arquivo:
@@ -139,11 +184,60 @@ with Conexao(nome_banco) as cur:
 print_sql(arquivo_inserir)
 ```
 
-## Consulta 1
+## Visualizando as Tabelas
+
+\vspace{1cm}
+
+```{python gerar_visualizar_tabelas, include = FALSE}
+query_tabelas = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'"
+
+query_tabela = "SELECT * FROM {};"
+
+tabelas = []
+
+with Conexao(nome_banco) as cur:
+    cur.execute(query_tabelas)
+    nomes_tabelas = [x[0] for x in cur.fetchall()]
+    for tabela in nomes_tabelas:
+        if tabela in ["Centros", "Matriculas"]:
+            continue
+        cur.execute(f"PRAGMA TABLE_INFO('{tabela}')")
+        colunas = [info[1] for info in cur.fetchall()]
+        cur.execute(query_tabela.format(tabela))
+        resultado = (tabela, cur.fetchall(), colunas)
+        tabelas.append(resultado)
+```
+
+\begin{center}
+
+```{python visualizar_tabelas}
+for nome_tabela, tabela, colunas in tabelas:
+    print(f"\n\n\\textbf{{{nome_tabela}}}:\n")
+    print_consulta(tabela, colunas)
+    print("\n")
+    if nome_tabela == "Alunos":
+        print("\\begin{multicols}{2}")
+    if nome_tabela == "Departamentos":
+        print("\\columnbreak")
+
+print("\\end{multicols}")
+```
+
+\end{center}
+
+\newpage
+
+# Consultas
+
+## Proposta de consultas
+
+1.   Professores que podem dar aula de Cálculo I.
+2.   Alunos que foram aprovados por nota mas reprovados por falta.
+3.   Professores do departamento de matemática que tem qualificação para alguma matéria do curso de estatística.
 
 ```{python init_consultas_sql, include = FALSE}
 with open(arquivo_consulta) as arquivo:
-    consultas = arquivo.read().split(";")
+    consultas = arquivo.read().split(";\n")
 
 with Conexao(nome_banco) as cur:
     cur.execute(consultas[0])
@@ -154,32 +248,52 @@ with Conexao(nome_banco) as cur:
     consulta_3 = cur.fetchall()
 ```
 
+## Consulta 1
+
+\textbf{Professores que podem dar aula de Cálculo I.}
+
 ```{python print_consulta_1_sql}
 print(f"```sql\n{consultas[0]};\n```")
 ```
 
-```{python}
-print_consulta(consulta_1, ["Nome"])
+\begin{center}
+
+```{python print_consulta_1}
+print_consulta(consulta_1, ["IdProf", "NomeProf"])
 ```
 
-# Consulta 2
+\end{center}
+
+## Consulta 2
+
+\textbf{Alunos que foram aprovados por nota mas reprovados por falta.}
 
 ```{python print_consulta_2_sql}
 print(f"```sql\n{consultas[1]};\n```")
 ```
 
-```{python}
-print_consulta(consulta_2, ["Nome"])
+\begin{center}
+
+```{python print_consulta_2}
+print_consulta(consulta_2, ["IdAluno", "NomeAluno"])
 ```
 
-
-# Consulta 3
-```sql
-
-```
-
-
+\end{center}
 
 \newpage
 
-# Resultados
+## Consulta 3
+
+\textbf{Professores do departamento de matemática que tem qualificação para alguma matéria do curso de estatística.}
+
+```{python print_consulta_3_sql}
+print(f"```sql\n{consultas[2]};\n```")
+```
+
+\begin{center}
+
+```{python print_consulta_3}
+print_consulta(consulta_3, ["IdProf", "NomeProf"])
+```
+
+\end{center}

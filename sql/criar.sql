@@ -1,97 +1,95 @@
-CREATE TABLE alunos(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome VARCHAR,
-    curso INT,
-    ano INT,
-    ano_ingresso INT,
-    FOREIGN KEY (curso)
-        REFERENCES cursos (id)
+CREATE TABLE Alunos(
+    IdAluno INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    NomeAluno VARCHAR NOT NULL,
+    IdCurso INTEGER NOT NULL,
+    AnoIngresso INTEGER NOT NULL,
+    FOREIGN KEY (IdCurso)
+        REFERENCES Cursos (IdCurso)
 );
 
-CREATE TABLE avaliacoes(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    aluno INT,
-    aula INT,
-    nota INT,
-    FOREIGN KEY (aluno)
-        REFERENCES alunos (id),
-    FOREIGN KEY (aula)
-        REFERENCES aulas (id)
+CREATE TABLE Avaliacoes(
+    IdAvaliacao INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    IdAluno INTEGER NOT NULL,
+    IdAula INTEGER NOT NULL,
+    Nota INTEGER NOT NULL,
+    FOREIGN KEY (IdAluno)
+        REFERENCES Alunos (IdAluno),
+    FOREIGN KEY (IdAula)
+        REFERENCES Aulas (IdAula)
 );
 
-CREATE TABLE aulas(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    disciplina INT,
-    curso INT,
-    professor INT,
-    ano INT,
-    FOREIGN KEY (professor)
-        REFERENCES professores (id),
-    FOREIGN KEY (curso)
-        REFERENCES cursos (id),
-    FOREIGN KEY (disciplina)
-        REFERENCES disciplinas (id)
+CREATE TABLE Aulas(
+    IdAula INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    IdDisc INTEGER NOT NULL,
+    IdCurso INTEGER NOT NULL,
+    IdProf INTEGER NOT NULL,
+    Ano INTEGER NOT NULL,
+    FOREIGN KEY (IdProf)
+        REFERENCES Professores (IdProf),
+    FOREIGN KEY (IdCurso)
+        REFERENCES Cursos (IdCurso),
+    FOREIGN KEY (IdDisc)
+        REFERENCES Disciplinas (IdDisc)
 );
 
-CREATE TABLE centros(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome VARCHAR
+CREATE TABLE Centros(
+    IdCentro INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    Nome VARCHAR NOT NULL
 );
 
-CREATE TABLE cursos(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome VARCHAR,
-    departamento INT,
-    FOREIGN KEY (departamento)
-        REFERENCES departamentos (id)
+CREATE TABLE Cursos(
+    IdCurso INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    NomeCurso VARCHAR NOT NULL,
+    IdDepto INTEGER NOT NULL,
+    FOREIGN KEY (IdDepto)
+        REFERENCES Departamentos (IdDepto)
 );
 
-CREATE TABLE departamentos(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome VARCHAR,
-    centro INT,
-    FOREIGN KEY (centro)
-        REFERENCES centros (id)
+CREATE TABLE Departamentos(
+    IdDepto INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    NomeDepto VARCHAR NOT NULL,
+    IdCentro INTEGER NOT NULL,
+    FOREIGN KEY (IdCentro)
+        REFERENCES Centros (IdCentro)
 );
 
-CREATE TABLE disciplinas(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome VARCHAR,
-    curso INT,
-    ano INT,
-    ano_curso INT,
-    professor INT,
-    FOREIGN KEY (curso)
-        REFERENCES cursos (id),
-    FOREIGN KEY (professor)
-        REFERENCES professores (id)
+CREATE TABLE Disciplinas(
+    IdDisc INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    NomeDisc VARCHAR NOT NULL
 );
 
-CREATE TABLE presenca(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    aluno INT,
-    aula INT,
-    presenca INT,
-    FOREIGN KEY (aluno)
-        REFERENCES alunos (id),
-    FOREIGN KEY (aula)
-        REFERENCES aula (id)
+CREATE TABLE Matriculas(
+    IdMatricula INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    IdAluno INTEGER NOT NULL,
+    IdAula INTEGER NOT NULL,
+    FOREIGN KEY (IdAluno)
+        REFERENCES Alunos (IdAluno),
+    FOREIGN KEY (IdAula)
+        REFERENCES Aulas (IdAula)
 );
-
-CREATE TABLE professores(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome VARCHAR,
-    departamento INT,
-    FOREIGN KEY (departamento)
-        REFERENCES departamentos (id)
+CREATE TABLE Presenca(
+    IdPresenca INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    IdAluno INTEGER NOT NULL,
+    IdAula INTEGER NOT NULL,
+    Presenca INTEGER NOT NULL,
+    FOREIGN KEY (IdAluno)
+        REFERENCES Alunos (IdAluno),
+    FOREIGN KEY (IdAula)
+        REFERENCES Aulas (IdAula)
 );
-
-CREATE TABLE qualificacoes(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    professor INTEGER,
-    disciplina INTEGER,
-    FOREIGN KEY (professor)
-        REFERENCES professores (id)
-    FOREIGN KEY (disciplina)
-        REFERENCES disciplinas (id)
+CREATE TABLE Professores(
+    IdProf INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    NomeProf VARCHAR NOT NULL,
+    IdDepto INTEGER NOT NULL,
+    FOREIGN KEY (IdDepto)
+        REFERENCES Departamentos (IdDepto)
+);
+CREATE TABLE Qualificacoes(
+    IdQual INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    IdProf INTEGER NOT NULL,
+    IdDisc INTEGER NOT NULL,
+    FOREIGN KEY (IdProf)
+        REFERENCES Professores (IdProf)
+    FOREIGN KEY (IdDisc)
+        REFERENCES Disciplinas (IdDisc)
 );

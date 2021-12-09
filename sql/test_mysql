@@ -1,3 +1,0 @@
-#!/bin/sh
-
-cat criar.sql inserir.sql consultas.sql | mysql trabalho_banco
